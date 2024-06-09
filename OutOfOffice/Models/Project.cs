@@ -1,10 +1,13 @@
 ﻿using OutOfOffice.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OutOfOffice.Models
 {
     public class Project
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public ProjectType Type { get; set; }
         public DateOnly StartDate { get; set; }

@@ -6,6 +6,8 @@ namespace OutOfOffice.Models
 {
     public class Employee
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public string FullName { get; set; } = null!;

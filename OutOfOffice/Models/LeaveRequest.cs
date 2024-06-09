@@ -1,13 +1,16 @@
 ﻿using OutOfOffice.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OutOfOffice.Models
 {
     public class LeaveRequest
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [ForeignKey("Employee")]
-        public int EmployeId{ get; set; }
+        public int EmployeeId{ get; set; }
         public Employee Employee { get; set; } = null!;
         public AbsenceReason AbsenceReason { get; set; }
         public DateOnly StartDate { get; set; }
