@@ -17,5 +17,12 @@ namespace OutOfOffice.Managers
         {
             return await _context.Employees.ToListAsync();
         }
+
+        public async Task<List<LeaveRequest>> GetLeaveRequestsAsync()
+        {
+            return await _context.LeaveRequests
+                .Include(x => x.Employee)
+                .ToListAsync();
+        }
     }
 }
