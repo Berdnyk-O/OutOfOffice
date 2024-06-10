@@ -24,5 +24,13 @@ namespace OutOfOffice.Managers
                 .Include(x => x.Employee)
                 .ToListAsync();
         }
+
+        public async Task<List<ApprovalRequest>> GetApprovalRequestsAsync()
+        {
+            return await _context.ApprovalRequests
+                .Include(x => x.Approver)
+                .Include(x=>x.LeaveRequest)
+                .ToListAsync();
+        }
     }
 }
