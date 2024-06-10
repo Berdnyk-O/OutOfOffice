@@ -1,15 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
+using OutOfOffice.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<OutOfOfficeContext>(opts =>
+builder.Services.AddDbContext<IOutOfOfficeContext, OutOfOfficeContext>(opts =>
 {
     opts.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
+
+builder.Services.AddScoped<IManager, Manager>();
 
 var app = builder.Build();
 
