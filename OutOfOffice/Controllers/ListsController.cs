@@ -30,5 +30,11 @@ namespace OutOfOffice.Controllers
             var requests = await _manager.GetApprovalRequestsAsync();
             return View(requests);
         }
+
+        public async Task<ActionResult> Projects()
+        {
+            var projects = await _manager.GetProjectsAsync();
+            return View(projects);
+        }
     }
 }

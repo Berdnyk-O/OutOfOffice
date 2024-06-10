@@ -32,5 +32,12 @@ namespace OutOfOffice.Managers
                 .Include(x=>x.LeaveRequest)
                 .ToListAsync();
         }
+
+        public async Task<List<Project>> GetProjectsAsync()
+        {
+            return await _context.Projects
+                .Include(x=>x.ProjectManager)
+                .ToListAsync();
+        }
     }
 }

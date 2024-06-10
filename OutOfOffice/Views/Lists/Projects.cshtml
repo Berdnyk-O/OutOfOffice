@@ -1,0 +1,42 @@
+﻿@model List<Project>
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div>
+    <h1>Projects:</h1>
+    @if (Model.Count < 1)
+    {
+        <h3>List empty</h3>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">StartDate</th>
+                    <th scope="col">EndDate</th>
+                    <th scope="col">project manager full name</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model)
+                {
+                    <tr>
+                        <th scope="row">@project.Id</th>
+                        <td>@project.Type.ToString()</td>
+                        <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                        <td>@(project.EndDate?.ToString("yyyy-MM-dd")?? "-")</td>
+                        <td>@project.ProjectManager.FullName</td>
+                        <td>@(project.Comment ?? "No comment")</td>
+                        <td>@project.Status.ToString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
