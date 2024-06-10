@@ -1,12 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OutOfOffice.Data;
+using OutOfOffice.Managers;
 
 namespace OutOfOffice.Controllers
 {
     public class ListsController : Controller
     {
-        public ActionResult Employees()
+        private readonly IManager _manager;
+
+        public ListsController(IManager manager)
         {
-            return View();
+            _manager = manager;
+        }
+
+        public async Task<ActionResult> Employees()
+        {
+            var employees = await _manager.GetEmployeesAsync();
+            return View(employees);
         }
 
         /*// GET: ListsController/Details/5
