@@ -1,0 +1,38 @@
+﻿@model List<ApprovalRequest>
+@{
+    ViewData["Title"] = "Approval Requests";
+}
+
+<div>
+    <h1>Approval Requests:</h1>
+    @if (Model.Count < 1)
+    {
+        <h3>List empty</h3>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Approver full name</th>
+                    <th scope="col">LeaveRequestId</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <th scope="row">@request.Id</th>
+                        <td>@request.Approver.FullName</td>
+                        <td>@request.LeaveRequestId</td>
+                        <td>@request.Comment</td>
+                        <td>@request.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

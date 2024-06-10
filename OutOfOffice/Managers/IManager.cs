@@ -6,5 +6,6 @@ namespace OutOfOffice.Managers
     {
         Task<List<Employee>> GetEmployeesAsync();
         Task<List<LeaveRequest>> GetLeaveRequestsAsync();
+        Task<List<ApprovalRequest>> GetApprovalRequestsAsync();
     }
 }
