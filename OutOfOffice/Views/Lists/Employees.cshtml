@@ -14,13 +14,27 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Full name</th>
-                    <th scope="col">Subdivision</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Partner</th>
-                    <th scope="col">Out of office balance</th>
+                    <th scope="col">
+                        @Html.ActionLink("Id", "Employees")
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Position", "Employees", new { sortBy = "Position" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Status", "Employees", new { sortBy = "Status" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" })
+                    </th>
                 </tr>
             </thead>
             <tbody>
