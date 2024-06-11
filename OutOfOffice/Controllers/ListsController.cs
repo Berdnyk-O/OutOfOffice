@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OutOfOffice.Enums;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 
@@ -14,6 +13,7 @@ namespace OutOfOffice.Controllers
             _manager = manager;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Employees(string sortBy)
         {
             var employees = await _manager.GetEmployeesAsync();
@@ -42,6 +42,7 @@ namespace OutOfOffice.Controllers
 
             return View(employees);
         }
+
         [HttpGet]
         public async Task<IActionResult> AddEmployeeAsync()
         {
