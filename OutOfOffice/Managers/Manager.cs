@@ -74,6 +74,17 @@ namespace OutOfOffice.Managers
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteEmployeeAsync(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+
+            if(employee != null)
+            {
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<List<LeaveRequest>> GetLeaveRequestsAsync()
         {
             return await _context.LeaveRequests

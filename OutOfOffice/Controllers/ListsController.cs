@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto.Digests;
-using OutOfOffice.Enums;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 
@@ -126,6 +124,13 @@ namespace OutOfOffice.Controllers
         public async Task<IActionResult> EditEmployee(int id, AddEditEmployeeViewModel employeeViewModel)
         {
             await _manager.EditEmployeeAsync(id, employeeViewModel);
+            return RedirectToAction("Employees", "Lists");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            await _manager.DeleteEmployeeAsync(id);
             return RedirectToAction("Employees", "Lists");
         }
 
