@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OutOfOffice.Data;
+using OutOfOffice.Enums;
 using OutOfOffice.Managers;
+using OutOfOffice.Models;
 
 namespace OutOfOffice.Controllers
 {
@@ -40,6 +41,40 @@ namespace OutOfOffice.Controllers
             }
 
             return View(employees);
+        }
+        [HttpGet]
+        public async Task<IActionResult> AddEmployeeAsync()
+        {
+            var employees = await _manager.GetEmployeesAsync();
+            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeesVM[i] = new EmployeeViewModel()
+                {
+                    Id = employees[i].Id,
+                    FullName = employees[i].FullName,
+                    Subdivision = employees[i].Subdivision,
+                    Position = employees[i].Position,
+                    Status = employees[i].Status,
+                    PeoplePartnerId = employees[i].PeoplePartnerId,
+                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
+                    Photo = null
+                };
+            }
+
+            var addEmployeeVM = new AddEmployeeViewModel()
+            {
+                Partners = employeesVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee(AddEmployeeViewModel employeeViewModel)
+        {
+            await _manager.AddEmployeeAsync(employeeViewModel);
+            return RedirectToAction("Employees", "Lists");
         }
 
         public async Task<ActionResult> LeaveRequests()

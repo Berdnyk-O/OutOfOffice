@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
+using OutOfOffice.Enums;
 using OutOfOffice.Models;
 
 namespace OutOfOffice.Managers
@@ -16,6 +17,31 @@ namespace OutOfOffice.Managers
         public async Task<List<Employee>> GetEmployeesAsync()
         {
             return await _context.Employees.ToListAsync();
+        }
+
+        public async Task AddEmployeeAsync(AddEmployeeViewModel employeeViewModel)
+        {
+            string photoString;
+            using (var memoryStream = new MemoryStream())
+            {
+                await employeeViewModel.Photo.CopyToAsync(memoryStream);
+                byte[] photoBytes = memoryStream.ToArray();
+                photoString = Convert.ToBase64String(photoBytes);
+            }
+
+            var employee = new Employee()
+            {
+                FullName = employeeViewModel.FullName,
+                Subdivision = employeeViewModel.Subdivision,
+                Position = employeeViewModel.Position,
+                Status = employeeViewModel.Status,
+                PeoplePartnerId = employeeViewModel.PeoplePartnerId,
+                OutOfOfficeBalance = employeeViewModel.OutOfOfficeBalance,
+                Photo = photoString
+            };
+
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<LeaveRequest>> GetLeaveRequestsAsync()
