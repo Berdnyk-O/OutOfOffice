@@ -65,7 +65,7 @@ namespace OutOfOffice.Controllers
                 };
             }
 
-            var addEmployeeVM = new AddEmployeeViewModel()
+            var addEmployeeVM = new AddEditEmployeeViewModel()
             {
                 Partners = employeesVM
             };
@@ -74,7 +74,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(AddEmployeeViewModel employeeViewModel)
+        public async Task<IActionResult> AddEmployee(AddEditEmployeeViewModel employeeViewModel)
         {
             await _manager.AddEmployeeAsync(employeeViewModel);
             return RedirectToAction("Employees", "Lists");
@@ -85,7 +85,11 @@ namespace OutOfOffice.Controllers
         {
             var employees = await _manager.GetEmployeesAsync();
 
-            var employee = employees.First(x=>x.Id==id);
+            var employee = employees.Find(x=>x.Id==id);
+            if(employee == null)
+            {
+                return View();
+            }
 
             EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
             for (int i = 0; i < employees.Count; i++)
@@ -103,7 +107,7 @@ namespace OutOfOffice.Controllers
                 };
             }
 
-            var addEmployeeVM = new AddEmployeeViewModel()
+            var addEmployeeVM = new AddEditEmployeeViewModel()
             {
                 FullName = employee.FullName,
                 Subdivision = employee.Subdivision,
@@ -119,7 +123,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditEmployee(int id, AddEmployeeViewModel employeeViewModel)
+        public async Task<IActionResult> EditEmployee(int id, AddEditEmployeeViewModel employeeViewModel)
         {
             await _manager.EditEmployeeAsync(id, employeeViewModel);
             return RedirectToAction("Employees", "Lists");

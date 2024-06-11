@@ -25,7 +25,7 @@ namespace OutOfOffice.Managers
             return await _context.Employees.FindAsync(id);
         }
 
-        public async Task AddEmployeeAsync(AddEmployeeViewModel employeeViewModel)
+        public async Task AddEmployeeAsync(AddEditEmployeeViewModel employeeViewModel)
         {
             string? photoString = null;
             if (employeeViewModel.Photo != null)
@@ -49,7 +49,7 @@ namespace OutOfOffice.Managers
             await _context.SaveChangesAsync();
         }
 
-        public async Task EditEmployeeAsync(int id, AddEmployeeViewModel employeeViewModel)
+        public async Task EditEmployeeAsync(int id, AddEditEmployeeViewModel employeeViewModel)
         {
             var employee = await GetEmployeeByIdAsync(id);
             if(employee == null)

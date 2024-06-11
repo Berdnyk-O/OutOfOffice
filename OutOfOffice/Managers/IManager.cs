@@ -6,8 +6,8 @@ namespace OutOfOffice.Managers
     {
         Task<List<Employee>> GetEmployeesAsync();
         Task<Employee?> GetEmployeeByIdAsync(int id);
-        Task AddEmployeeAsync(AddEmployeeViewModel employeeViewModel);
-        Task EditEmployeeAsync(int id, AddEmployeeViewModel employeeViewModel);
+        Task AddEmployeeAsync(AddEditEmployeeViewModel employeeViewModel);
+        Task EditEmployeeAsync(int id, AddEditEmployeeViewModel employeeViewModel);
         Task<List<LeaveRequest>> GetLeaveRequestsAsync();
         Task<List<ApprovalRequest>> GetApprovalRequestsAsync();
         Task<List<Project>> GetProjectsAsync();

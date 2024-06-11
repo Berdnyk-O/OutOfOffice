@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OutOfOffice.Models
 {
-    public class AddEmployeeViewModel
+    public class AddEditEmployeeViewModel
     {
         public string FullName { get; set; } = null!;
         public Subdivision Subdivision { get; set; }
