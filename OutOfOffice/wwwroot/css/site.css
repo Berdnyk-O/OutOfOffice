@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.sort-link {
+    color: #444;
+    text-decoration: none;
+}
+
+.sort-link:hover {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: red;
+}

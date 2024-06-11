@@ -15,25 +15,25 @@
             <thead>
                 <tr>
                     <th scope="col">
-                        @Html.ActionLink("Id", "Employees")
+                        @Html.ActionLink("Id", "Employees", new { sortBy = string.Empty }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName" })
+                        @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision" })
+                        @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Position", "Employees", new { sortBy = "Position" })
+                        @Html.ActionLink("Position", "Employees", new { sortBy = "Position" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Status", "Employees", new { sortBy = "Status" })
+                        @Html.ActionLink("Status", "Employees", new { sortBy = "Status" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner" })
+                        @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" })
+                        @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" }, new { @class = "sort-link" })
                     </th>
                 </tr>
             </thead>
