@@ -12,7 +12,8 @@ namespace OutOfOffice.Models
         public Status Status { get; set; }
         public int? PeoplePartnerId { get; set; }
         public int OutOfOfficeBalance { get; set; }
-        public IFormFile Photo { get; set; }
+        public IFormFile? Photo { get; set; }
+        public string? PhotoBase64 { get; set; }
 
         public EmployeeViewModel[] Partners { get; set; } = null!;
 

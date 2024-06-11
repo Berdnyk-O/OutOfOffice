@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto.Digests;
+using OutOfOffice.Enums;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 
@@ -78,18 +80,66 @@ namespace OutOfOffice.Controllers
             return RedirectToAction("Employees", "Lists");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditEmployee(int id)
+        {
+            var employees = await _manager.GetEmployeesAsync();
+
+            var employee = employees.First(x=>x.Id==id);
+
+            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeesVM[i] = new EmployeeViewModel()
+                {
+                    Id = employees[i].Id,
+                    FullName = employees[i].FullName,
+                    Subdivision = employees[i].Subdivision,
+                    Position = employees[i].Position,
+                    Status = employees[i].Status,
+                    PeoplePartnerId = employees[i].PeoplePartnerId,
+                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
+                    Photo = null
+                };
+            }
+
+            var addEmployeeVM = new AddEmployeeViewModel()
+            {
+                FullName = employee.FullName,
+                Subdivision = employee.Subdivision,
+                Position = employee.Position,
+                Status = employee.Status,
+                PeoplePartnerId = employee.PeoplePartnerId,
+                OutOfOfficeBalance = employee.OutOfOfficeBalance,
+                PhotoBase64 = employee.Photo,
+                Partners = employeesVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(int id, AddEmployeeViewModel employeeViewModel)
+        {
+            await _manager.EditEmployeeAsync(id, employeeViewModel);
+            return RedirectToAction("Employees", "Lists");
+        }
+
+        [HttpGet]
         public async Task<ActionResult> LeaveRequests()
         {
             var requests = await _manager.GetLeaveRequestsAsync();
             return View(requests);
         }
 
+        [HttpGet]
         public async Task<ActionResult> ApprovalRequests()
         {
             var requests = await _manager.GetApprovalRequestsAsync();
             return View(requests);
         }
 
+        [HttpGet]
         public async Task<ActionResult> Projects()
         {
             var projects = await _manager.GetProjectsAsync();
