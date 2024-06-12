@@ -29,7 +29,6 @@
                     <th scope="col">
                         @Html.ActionLink("Project manager", "Projects", new { sortBy = "ProjectManager" }, new { @class = "sort-link" })
                     </th>
-                    <th scope="col">Comment</th>
                     <th scope="col">
                         @Html.ActionLink("Status", "Projects", new { sortBy = "Status" }, new { @class = "sort-link" })
                     </th>
@@ -47,7 +46,6 @@
                         <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
                         <td>@(project.EndDate?.ToString("yyyy-MM-dd")?? "-")</td>
                         <td>@project.ProjectManager.FullName</td>
-                        <td>@(project.Comment ?? "No comment")</td>
                         <td>@project.Status.ToString()</td>
                         <td>
                             <a class="btn btn-primary" asp-controller="Lists" asp-action="ProjectDetails" asp-route-id="@project.Id">Details</a>
