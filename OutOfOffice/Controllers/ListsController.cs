@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
+using System.Globalization;
 
 namespace OutOfOffice.Controllers
 {
@@ -135,9 +136,29 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> LeaveRequests()
+        public async Task<ActionResult> LeaveRequests(string sortBy)
         {
             var requests = await _manager.GetLeaveRequestsAsync();
+
+            switch (sortBy)
+            {
+                case "EmployeeFullName":
+                    requests = requests.OrderByDescending(x => x.Employee.FullName).ToList();
+                    break;
+                case "AbsenceReason":
+                    requests = requests.OrderByDescending(x => x.AbsenceReason).ToList();
+                    break;
+                case "StartDate":
+                    requests = requests.OrderByDescending(x => x.StartDate).ToList();
+                    break;
+                case "EndDate":
+                    requests = requests.OrderByDescending(x => x.EndDate).ToList();
+                    break;
+                case "Status":
+                    requests = requests.OrderByDescending(x => x.Status).ToList();
+                    break;
+            }
+
             return View(requests);
         }
 
