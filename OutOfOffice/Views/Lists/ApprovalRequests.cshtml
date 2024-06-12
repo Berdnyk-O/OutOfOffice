@@ -14,11 +14,21 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Approver full name</th>
-                    <th scope="col">LeaveRequestId</th>
-                    <th scope="col">Comment</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">
+                        @Html.ActionLink("Id", "ApprovalRequests", new { sortBy = string.Empty }, new { @class = "sort-link" })
+                        </th>
+                    <th scope="col">
+                        @Html.ActionLink("Approver full name", "ApprovalRequests", new { sortBy = "ApproverFullName" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("LeaveRequestId", "ApprovalRequests", new { sortBy = "LeaveRequestId" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Comment", "ApprovalRequests", new { sortBy = "Comment" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Status", "ApprovalRequests", new { sortBy = "Status" }, new { @class = "sort-link" })
+                    </th>
                 </tr>
             </thead>
             <tbody>
