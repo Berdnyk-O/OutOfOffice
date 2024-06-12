@@ -14,13 +14,25 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">StartDate</th>
-                    <th scope="col">EndDate</th>
-                    <th scope="col">project manager full name</th>
+                    <th scope="col">
+                        @Html.ActionLink("Id", "Projects", new { sortBy = string.Empty }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Type", "Projects", new { sortBy = "Type" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Start date", "Projects", new { sortBy = "StartDate" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("End date", "Projects", new { sortBy = "EndDate" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Project manager", "Projects", new { sortBy = "ProjectManager" }, new { @class = "sort-link" })
+                    </th>
                     <th scope="col">Comment</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">
+                        @Html.ActionLink("Status", "Projects", new { sortBy = "Status" }, new { @class = "sort-link" })
+                    </th>
                 </tr>
             </thead>
             <tbody>

@@ -205,9 +205,29 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Projects()
+        public async Task<ActionResult> Projects(string sortBy)
         {
             var projects = await _manager.GetProjectsAsync();
+
+            switch (sortBy)
+            {
+                case "Type":
+                    projects = projects.OrderByDescending(x => x.Type).ToList();
+                    break;
+                case "StartDate":
+                    projects = projects.OrderByDescending(x => x.StartDate).ToList();
+                    break;
+                case "EndDate":
+                    projects = projects.OrderByDescending(x => x.EndDate).ToList();
+                    break;
+                case "ProjectManager":
+                    projects = projects.OrderByDescending(x => x.ProjectManager.FullName).ToList();
+                    break;
+                case "Status":
+                    projects = projects.OrderByDescending(x => x.Status).ToList();
+                    break;
+            }
+
             return View(projects);
         }
     }
