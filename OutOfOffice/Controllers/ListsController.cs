@@ -163,6 +163,13 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> LeaveRequestDetails(int id)
+        {
+            var request = await _manager.GetLeaveRequestByIdAsync(id);
+            return View(request);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> ApprovalRequests(string sortBy)
         {
             var requests = await _manager.GetApprovalRequestsAsync();
