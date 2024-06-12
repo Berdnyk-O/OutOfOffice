@@ -154,9 +154,6 @@ namespace OutOfOffice.Controllers
                 case "LeaveRequestId":
                     requests = requests.OrderByDescending(x => x.LeaveRequestId).ToList();
                     break;
-                case "Comment":
-                    requests = requests.OrderByDescending(x => x.Comment).ToList();
-                    break;
                 case "Status":
                     requests = requests.OrderByDescending(x => x.Status).ToList();
                     break;
