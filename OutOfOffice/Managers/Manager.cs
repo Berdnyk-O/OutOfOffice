@@ -145,5 +145,12 @@ namespace OutOfOffice.Managers
             }
             
         }
+
+        public async Task<Project?> GetProjectByIdAsync(int id)
+        {
+            return await _context.Projects
+               .Include(x => x.ProjectManager)
+               .FirstAsync(x => x.Id == id);
+        }
     }
 }

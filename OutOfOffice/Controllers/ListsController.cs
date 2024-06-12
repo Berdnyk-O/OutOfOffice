@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
-using System.Globalization;
 
 namespace OutOfOffice.Controllers
 {
@@ -15,7 +14,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Employees(string sortBy)
+        public async Task<IActionResult> Employees(string sortBy)
         {
             var employees = await _manager.GetEmployeesAsync();
 
@@ -136,7 +135,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> LeaveRequests(string sortBy)
+        public async Task<IActionResult> LeaveRequests(string sortBy)
         {
             var requests = await _manager.GetLeaveRequestsAsync();
 
@@ -170,7 +169,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ApprovalRequests(string sortBy)
+        public async Task<IActionResult> ApprovalRequests(string sortBy)
         {
             var requests = await _manager.GetApprovalRequestsAsync();
 
@@ -205,7 +204,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Projects(string sortBy)
+        public async Task<IActionResult> Projects(string sortBy)
         {
             var projects = await _manager.GetProjectsAsync();
 
@@ -229,6 +228,13 @@ namespace OutOfOffice.Controllers
             }
 
             return View(projects);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ProjectDetails(int id)
+        {
+            var request = await _manager.GetProjectByIdAsync(id);
+            return View(request);
         }
     }
 }

@@ -15,5 +15,6 @@ namespace OutOfOffice.Managers
         Task<ApprovalRequest?> GetApprovalRequestByIdAsync(int id);
         Task UpdateApprovalRequestStatusAsync(int id, ApprovalRequest approvalRequest);
         Task<List<Project>> GetProjectsAsync();
+        Task<Project?> GetProjectByIdAsync(int id);
     }
 }
