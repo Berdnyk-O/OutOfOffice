@@ -44,7 +44,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddEmployeeAsync()
+        public async Task<IActionResult> AddEmployee()
         {
             var employees = await _manager.GetEmployeesAsync();
             EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
