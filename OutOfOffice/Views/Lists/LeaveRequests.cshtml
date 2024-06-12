@@ -29,9 +29,11 @@
                     <th scope="col">
                         @Html.ActionLink("End date", "LeaveRequests", new { sortBy = "EndDate" }, new { @class = "sort-link" })
                     </th>
-                    <th scope="col">Comment</th>
                     <th scope="col">
                         @Html.ActionLink("Status", "LeaveRequests", new { sortBy = "Status" }, new { @class = "sort-link" })
+                    </th>
+                    <th scope="col">
+
                     </th>
                 </tr>
             </thead>
@@ -44,8 +46,10 @@
                         <td>@request.AbsenceReason.ToString()</td>
                         <td>@request.StartDate.ToString("yyyy-MM-dd")</td>
                         <td>@request.EndDate.ToString("yyyy-MM-dd")</td>
-                        <td>@(request.Comment ?? "No comment")</td>
                         <td>@request.Status.ToString()</td>
+                        <td>
+                            <a class="btn btn-primary" asp-controller="Lists" asp-action="LeaveRequestDetails" asp-route-id="@request.Id">Details</a>
+                        </td>
                     </tr>
                 }
             </tbody>

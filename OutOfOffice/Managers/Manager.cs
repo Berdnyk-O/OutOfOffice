@@ -90,6 +90,13 @@ namespace OutOfOffice.Managers
                 .ToListAsync();
         }
 
+        public async Task<LeaveRequest?> GetLeaveRequestByIdAsync(int id)
+        {
+            return await _context.LeaveRequests
+                .Include(x => x.Employee)
+                .FirstAsync(x => x.Id == id);
+        }
+
         public async Task<List<ApprovalRequest>> GetApprovalRequestsAsync()
         {
             return await _context.ApprovalRequests
