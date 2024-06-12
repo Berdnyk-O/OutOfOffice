@@ -24,10 +24,10 @@
                         @Html.ActionLink("LeaveRequestId", "ApprovalRequests", new { sortBy = "LeaveRequestId" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Comment", "ApprovalRequests", new { sortBy = "Comment" }, new { @class = "sort-link" })
+                        @Html.ActionLink("Status", "ApprovalRequests", new { sortBy = "Status" }, new { @class = "sort-link" })
                     </th>
                     <th scope="col">
-                        @Html.ActionLink("Status", "ApprovalRequests", new { sortBy = "Status" }, new { @class = "sort-link" })
+
                     </th>
                 </tr>
             </thead>
@@ -38,8 +38,10 @@
                         <th scope="row">@request.Id</th>
                         <td>@request.Approver.FullName</td>
                         <td>@request.LeaveRequestId</td>
-                        <td>@request.Comment</td>
                         <td>@request.Status</td>
+                        <td>
+                            <a class="btn btn-primary" asp-controller="Lists" asp-action="DetailsApprovalRequest" asp-route-id="@request.Id">Details</a>
+                        </td>
                     </tr>
                 }
             </tbody>

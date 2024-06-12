@@ -11,6 +11,8 @@ namespace OutOfOffice.Managers
         Task DeleteEmployeeAsync(int id);
         Task<List<LeaveRequest>> GetLeaveRequestsAsync();
         Task<List<ApprovalRequest>> GetApprovalRequestsAsync();
+        Task<ApprovalRequest?> GetApprovalRequestByIdAsync(int id);
+        Task UpdateApprovalRequestStatusAsync(int id, ApprovalRequest approvalRequest);
         Task<List<Project>> GetProjectsAsync();
     }
 }
