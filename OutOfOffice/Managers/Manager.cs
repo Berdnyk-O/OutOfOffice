@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto.Digests;
 using OutOfOffice.Data;
-using OutOfOffice.Enums;
 using OutOfOffice.Models;
 
 namespace OutOfOffice.Managers
@@ -100,6 +98,13 @@ namespace OutOfOffice.Managers
                 .ToListAsync();
         }
 
+        public async Task<ApprovalRequest?> GetApprovalRequestByIdAsync(int id)
+        {
+            return await _context.ApprovalRequests
+                .Include(x=>x.Approver)
+                .FirstAsync(x=>x.Id == id);
+        }
+
         public async Task<List<Project>> GetProjectsAsync()
         {
             return await _context.Projects
@@ -117,6 +122,20 @@ namespace OutOfOffice.Managers
                 photoString = Convert.ToBase64String(photoBytes);
             }
             return photoString;
+            
+        }
+
+        public async Task UpdateApprovalRequestStatusAsync(int id, ApprovalRequest approvalRequest)
+        {
+            var request = await GetApprovalRequestByIdAsync(id);
+            
+            if(request != null)
+            {
+                request.Comment = approvalRequest.Comment;
+                request.Status = approvalRequest.Status;
+
+                await _context.SaveChangesAsync();
+            }
             
         }
     }

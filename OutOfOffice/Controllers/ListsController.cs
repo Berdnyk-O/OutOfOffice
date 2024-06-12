@@ -166,6 +166,20 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> DetailsApprovalRequest(int id)
+        {
+            var request = await _manager.GetApprovalRequestByIdAsync(id);
+            return View(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DetailsApprovalRequest(int id, ApprovalRequest approvalRequest)
+        {
+            await _manager.UpdateApprovalRequestStatusAsync(id, approvalRequest);
+            return RedirectToAction("ApprovalRequests", "Lists");
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Projects()
         {
             var projects = await _manager.GetProjectsAsync();
