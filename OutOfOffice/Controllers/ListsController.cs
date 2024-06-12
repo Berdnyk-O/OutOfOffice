@@ -142,9 +142,26 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ApprovalRequests()
+        public async Task<ActionResult> ApprovalRequests(string sortBy)
         {
             var requests = await _manager.GetApprovalRequestsAsync();
+
+            switch (sortBy)
+            {
+                case "ApproverFullName":
+                    requests = requests.OrderByDescending(x => x.Approver.FullName).ToList();
+                    break;
+                case "LeaveRequestId":
+                    requests = requests.OrderByDescending(x => x.LeaveRequestId).ToList();
+                    break;
+                case "Comment":
+                    requests = requests.OrderByDescending(x => x.Comment).ToList();
+                    break;
+                case "Status":
+                    requests = requests.OrderByDescending(x => x.Status).ToList();
+                    break;
+            }
+
             return View(requests);
         }
 
