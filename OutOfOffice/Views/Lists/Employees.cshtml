@@ -4,7 +4,16 @@
 }
 
 <div>
-    <h1>Employees:</h1>
+    <div class="row">
+        <div class="col-md-9">
+            <h1>Employees:</h1>
+        </div>
+        <div class="col-md-3 d-flex justify-content-center align-items-center">
+            <a class="btn btn-success" asp-area="" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
+        </div>
+    </div>
+    
+    
     @if (Model.Count<1)
     {
         <h3>List empty</h3>
@@ -35,6 +44,9 @@
                     <th scope="col">
                         @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" }, new { @class = "sort-link" })
                     </th>
+                    <th scope="col">
+                        
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +60,9 @@
                         <td>@employee.Status.ToString()</td>
                         <td>@(employee.PeoplePartner?.FullName ?? "No Partner")</td>
                         <td>@employee.OutOfOfficeBalance</td>
+                        <td>
+                            <a class="btn btn-primary" asp-controller="Lists" asp-action="EditEmployee" asp-route-id="@employee.Id">Edit</a>
+                        </td>
                     </tr>
                 }
             </tbody>

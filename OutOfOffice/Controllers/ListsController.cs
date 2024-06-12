@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OutOfOffice.Data;
 using OutOfOffice.Managers;
+using OutOfOffice.Models;
 
 namespace OutOfOffice.Controllers
 {
@@ -13,6 +13,7 @@ namespace OutOfOffice.Controllers
             _manager = manager;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Employees(string sortBy)
         {
             var employees = await _manager.GetEmployeesAsync();
@@ -42,18 +43,112 @@ namespace OutOfOffice.Controllers
             return View(employees);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AddEmployeeAsync()
+        {
+            var employees = await _manager.GetEmployeesAsync();
+            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeesVM[i] = new EmployeeViewModel()
+                {
+                    Id = employees[i].Id,
+                    FullName = employees[i].FullName,
+                    Subdivision = employees[i].Subdivision,
+                    Position = employees[i].Position,
+                    Status = employees[i].Status,
+                    PeoplePartnerId = employees[i].PeoplePartnerId,
+                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
+                    Photo = null
+                };
+            }
+
+            var addEmployeeVM = new AddEditEmployeeViewModel()
+            {
+                Partners = employeesVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee(AddEditEmployeeViewModel employeeViewModel)
+        {
+            await _manager.AddEmployeeAsync(employeeViewModel);
+            return RedirectToAction("Employees", "Lists");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditEmployee(int id)
+        {
+            var employees = await _manager.GetEmployeesAsync();
+
+            var employee = employees.Find(x=>x.Id==id);
+            if(employee == null)
+            {
+                return View();
+            }
+
+            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeesVM[i] = new EmployeeViewModel()
+                {
+                    Id = employees[i].Id,
+                    FullName = employees[i].FullName,
+                    Subdivision = employees[i].Subdivision,
+                    Position = employees[i].Position,
+                    Status = employees[i].Status,
+                    PeoplePartnerId = employees[i].PeoplePartnerId,
+                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
+                    Photo = null
+                };
+            }
+
+            var addEmployeeVM = new AddEditEmployeeViewModel()
+            {
+                FullName = employee.FullName,
+                Subdivision = employee.Subdivision,
+                Position = employee.Position,
+                Status = employee.Status,
+                PeoplePartnerId = employee.PeoplePartnerId,
+                OutOfOfficeBalance = employee.OutOfOfficeBalance,
+                PhotoBase64 = employee.Photo,
+                Partners = employeesVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(int id, AddEditEmployeeViewModel employeeViewModel)
+        {
+            await _manager.EditEmployeeAsync(id, employeeViewModel);
+            return RedirectToAction("Employees", "Lists");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            await _manager.DeleteEmployeeAsync(id);
+            return RedirectToAction("Employees", "Lists");
+        }
+
+        [HttpGet]
         public async Task<ActionResult> LeaveRequests()
         {
             var requests = await _manager.GetLeaveRequestsAsync();
             return View(requests);
         }
 
+        [HttpGet]
         public async Task<ActionResult> ApprovalRequests()
         {
             var requests = await _manager.GetApprovalRequestsAsync();
             return View(requests);
         }
 
+        [HttpGet]
         public async Task<ActionResult> Projects()
         {
             var projects = await _manager.GetProjectsAsync();

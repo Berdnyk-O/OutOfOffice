@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Digests;
 using OutOfOffice.Data;
+using OutOfOffice.Enums;
 using OutOfOffice.Models;
 
 namespace OutOfOffice.Managers
@@ -16,6 +18,71 @@ namespace OutOfOffice.Managers
         public async Task<List<Employee>> GetEmployeesAsync()
         {
             return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<Employee?> GetEmployeeByIdAsync(int id)
+        {
+            return await _context.Employees.FindAsync(id);
+        }
+
+        public async Task AddEmployeeAsync(AddEditEmployeeViewModel employeeViewModel)
+        {
+            string? photoString = null;
+            if (employeeViewModel.Photo != null)
+            {
+                photoString = await PhototoStringAsync(employeeViewModel.Photo);
+            }
+            
+
+            var employee = new Employee()
+            {
+                FullName = employeeViewModel.FullName,
+                Subdivision = employeeViewModel.Subdivision,
+                Position = employeeViewModel.Position,
+                Status = employeeViewModel.Status,
+                PeoplePartnerId = employeeViewModel.PeoplePartnerId,
+                OutOfOfficeBalance = employeeViewModel.OutOfOfficeBalance,
+                Photo = photoString
+            };
+
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditEmployeeAsync(int id, AddEditEmployeeViewModel employeeViewModel)
+        {
+            var employee = await GetEmployeeByIdAsync(id);
+            if(employee == null)
+            {
+                return;
+            }
+
+            string? photoString = null;
+            if (employeeViewModel.Photo != null)
+            {
+                photoString = await PhototoStringAsync(employeeViewModel.Photo);
+            }
+
+            employee.FullName = employeeViewModel.FullName;
+            employee.Subdivision = employeeViewModel.Subdivision;
+            employee.Position = employeeViewModel.Position;
+            employee.Status = employeeViewModel.Status;
+            employee.PeoplePartnerId = employeeViewModel.PeoplePartnerId;
+            employee.OutOfOfficeBalance = employeeViewModel.OutOfOfficeBalance;
+            employee.Photo = photoString;
+           
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteEmployeeAsync(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+
+            if(employee != null)
+            {
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<LeaveRequest>> GetLeaveRequestsAsync()
@@ -38,6 +105,19 @@ namespace OutOfOffice.Managers
             return await _context.Projects
                 .Include(x=>x.ProjectManager)
                 .ToListAsync();
+        }
+
+        private async Task<string> PhototoStringAsync(IFormFile photo)
+        {
+            string photoString;
+            using (var memoryStream = new MemoryStream())
+            {
+                await photo.CopyToAsync(memoryStream);
+                byte[] photoBytes = memoryStream.ToArray();
+                photoString = Convert.ToBase64String(photoBytes);
+            }
+            return photoString;
+            
         }
     }
 }
