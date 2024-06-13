@@ -140,6 +140,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> LeaveRequests(string sortBy)
         {
             var requests = await _manager.GetLeaveRequestsAsync();
@@ -211,6 +212,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Projects(string sortBy)
         {
             var projects = await _manager.GetProjectsAsync();
@@ -238,6 +240,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> ProjectDetails(int id)
         {
             var request = await _manager.GetProjectByIdAsync(id);

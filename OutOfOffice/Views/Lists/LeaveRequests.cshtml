@@ -35,9 +35,12 @@
                     <th scope="col">
                         @Html.ActionLink("Status", "LeaveRequests", new { sortBy = "Status" }, new { @class = "sort-link" })
                     </th>
-                    <th scope="col">
+                    @if (User.IsInRole("HRManager") || User.IsInRole("ProjectManager"))
+                    {
+                        <th scope="col">
 
-                    </th>
+                        </th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -50,9 +53,13 @@
                         <td>@request.StartDate.ToString("yyyy-MM-dd")</td>
                         <td>@request.EndDate.ToString("yyyy-MM-dd")</td>
                         <td>@request.Status.ToString()</td>
-                        <td>
-                            <a class="btn btn-primary" asp-controller="Lists" asp-action="LeaveRequestDetails" asp-route-id="@request.Id">Details</a>
-                        </td>
+                        @if (User.IsInRole("HRManager") || User.IsInRole("ProjectManager"))
+                        {
+                            <td>
+                                <a class="btn btn-primary" asp-controller="Lists" asp-action="LeaveRequestDetails" asp-route-id="@request.Id">Details</a>
+                            </td>
+                        }
+                       
                     </tr>
                 }
             </tbody>
