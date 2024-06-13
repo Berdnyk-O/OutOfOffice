@@ -31,3 +31,8 @@ body {
     text-decoration: underline;
     text-decoration-color: red;
 }
+
+.readonly {
+    pointer-events: none;
+    background-color: #f2f2f2;
+}

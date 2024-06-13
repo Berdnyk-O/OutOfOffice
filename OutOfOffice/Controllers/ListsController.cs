@@ -16,6 +16,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> Employees(string sortBy)
         {
             var employees = await _manager.GetEmployeesAsync();
@@ -82,6 +83,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> EditEmployee(int id)
         {
             var employees = await _manager.GetEmployeesAsync();

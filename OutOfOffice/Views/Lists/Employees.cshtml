@@ -63,7 +63,16 @@
                         <td>@(employee.PeoplePartner?.FullName ?? "No Partner")</td>
                         <td>@employee.OutOfOfficeBalance</td>
                         <td>
-                            <a class="btn btn-primary" asp-controller="Lists" asp-action="EditEmployee" asp-route-id="@employee.Id">Edit</a>
+                            <a class="btn btn-primary" asp-controller="Lists" asp-action="EditEmployee" asp-route-id="@employee.Id">
+                                @if (User.IsInRole("HRManager"))
+                                {
+                                    <text>Edit</text>
+                                }
+                                else
+                                {
+                                    <text>Details</text>
+                                }
+                            </a>
                         </td>
                     </tr>
                 }
