@@ -85,6 +85,7 @@ namespace OutOfOffice.Controllers
 
             var addEmployeeVM = new AddEditEmployeeViewModel()
             {
+                Id = employee.Id, 
                 FullName = employee.FullName,
                 Subdivision = employee.Subdivision,
                 Position = employee.Position,

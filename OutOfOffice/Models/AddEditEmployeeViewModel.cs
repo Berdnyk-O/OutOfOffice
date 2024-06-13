@@ -4,6 +4,7 @@ namespace OutOfOffice.Models
 {
     public class AddEditEmployeeViewModel
     {
+        public int Id { get; set; }
         public string FullName { get; set; } = null!;
         public Subdivision Subdivision { get; set; }
         public Position Position { get; set; }
