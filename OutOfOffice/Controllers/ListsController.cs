@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
@@ -45,6 +46,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="HRManager")]
         public async Task<IActionResult> AddEmployee()
         {
             var employees = await _manager.GetEmployeesAsync();
