@@ -1,10 +1,13 @@
-﻿@model List<ApprovalRequest>
+﻿@using OutOfOffice.Models.Entities
+@model List<ApprovalRequest>
+
 @{
     ViewData["Title"] = "Approval Requests";
 }
 
 <div>
     <h1>Approval Requests:</h1>
+
     @if (Model.Count < 1)
     {
         <h3>List empty</h3>
@@ -40,7 +43,7 @@
                         <td>@request.LeaveRequestId</td>
                         <td>@request.Status</td>
                         <td>
-                            <a class="btn btn-primary" asp-controller="Lists" asp-action="DetailsApprovalRequest" asp-route-id="@request.Id">Details</a>
+                            <a class="btn btn-primary" asp-controller="Lists" asp-action="ApprovalRequestDetails" asp-route-id="@request.Id">Details</a>
                         </td>
                     </tr>
                 }

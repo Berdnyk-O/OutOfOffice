@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
+using OutOfOffice.Models.Entities;
 
 namespace OutOfOffice.Controllers
 {
@@ -44,7 +45,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddEmployeeAsync()
+        public async Task<IActionResult> AddEmployee()
         {
             var employees = await _manager.GetEmployeesAsync();
             EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
@@ -190,14 +191,14 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DetailsApprovalRequest(int id)
+        public async Task<IActionResult> ApprovalRequestDetails(int id)
         {
             var request = await _manager.GetApprovalRequestByIdAsync(id);
             return View(request);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DetailsApprovalRequest(int id, ApprovalRequest approvalRequest)
+        public async Task<IActionResult> ApprovalRequestDetails(int id, ApprovalRequest approvalRequest)
         {
             await _manager.UpdateApprovalRequestStatusAsync(id, approvalRequest);
             return RedirectToAction("ApprovalRequests", "Lists");

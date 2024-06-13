@@ -1,4 +1,5 @@
 ﻿using OutOfOffice.Models;
+using OutOfOffice.Models.Entities;
 
 namespace OutOfOffice.Managers
 {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OutOfOffice.Models
+namespace OutOfOffice.Models.Entities
 {
     public class LeaveRequest
     {
@@ -17,6 +17,5 @@ namespace OutOfOffice.Models
         public DateTime EndDate { get; set; }
         public string? Comment { get; set; }
         public Status Status { get; set; }
-
     }
 }

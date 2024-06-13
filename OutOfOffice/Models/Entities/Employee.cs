@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OutOfOffice.Models
+namespace OutOfOffice.Models.Entities
 {
     public class Employee
     {
