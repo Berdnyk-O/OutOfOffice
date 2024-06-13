@@ -45,8 +45,18 @@
                     <th scope="col">
                         @Html.ActionLink("Status", "Projects", new { sortBy = "Status" }, new { @class = "sort-link" })
                     </th>
-                    @if (User.IsInRole("HRManager") || User.IsInRole("ProjectManager"))
+                    @if (User.IsInRole("HRManager") )
                     {
+                        <th scope="col">
+
+                        </th>
+                        
+                    }
+                    @if(User.IsInRole("ProjectManager"))
+                    {
+                        <th scope="col">
+
+                        </th>
                         <th scope="col">
 
                         </th>
@@ -68,6 +78,12 @@
                         {
                             <td>
                                 <a class="btn btn-primary" asp-controller="Lists" asp-action="ProjectDetails" asp-route-id="@project.Id">Details</a>
+                            </td>
+                        }
+                        @if (User.IsInRole("ProjectManager"))
+                        {
+                            <td>
+                                <a class="btn btn-primary" asp-controller="Lists" asp-action="EditProject" asp-route-id="@project.Id">Edit</a>
                             </td>
                         }
                     </tr>

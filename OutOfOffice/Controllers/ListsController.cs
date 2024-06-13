@@ -51,21 +51,8 @@ namespace OutOfOffice.Controllers
         public async Task<IActionResult> AddEmployee()
         {
             var employees = await _manager.GetEmployeesAsync();
-            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
-            for (int i = 0; i < employees.Count; i++)
-            {
-                employeesVM[i] = new EmployeeViewModel()
-                {
-                    Id = employees[i].Id,
-                    FullName = employees[i].FullName,
-                    Subdivision = employees[i].Subdivision,
-                    Position = employees[i].Position,
-                    Status = employees[i].Status,
-                    PeoplePartnerId = employees[i].PeoplePartnerId,
-                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
-                    Photo = null
-                };
-            }
+
+            var employeesVM = EmployeeEntitiesToViewModels(employees);
 
             var addEmployeeVM = new AddEditEmployeeViewModel()
             {
@@ -94,21 +81,7 @@ namespace OutOfOffice.Controllers
                 return View();
             }
 
-            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
-            for (int i = 0; i < employees.Count; i++)
-            {
-                employeesVM[i] = new EmployeeViewModel()
-                {
-                    Id = employees[i].Id,
-                    FullName = employees[i].FullName,
-                    Subdivision = employees[i].Subdivision,
-                    Position = employees[i].Position,
-                    Status = employees[i].Status,
-                    PeoplePartnerId = employees[i].PeoplePartnerId,
-                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
-                    Photo = null
-                };
-            }
+            var employeesVM = EmployeeEntitiesToViewModels(employees);
 
             var addEmployeeVM = new AddEditEmployeeViewModel()
             {
@@ -251,8 +224,72 @@ namespace OutOfOffice.Controllers
         [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> AddProject()
         {
-            var employees = await _manager.GetProjectManagersAsync();
-            
+            var projectManagers = await _manager.GetProjectManagersAsync();
+
+            var projectManagersVM = EmployeeEntitiesToViewModels(projectManagers);
+
+            var addEmployeeVM = new AddEditProjectViewModel()
+            {
+                ProjectManagers = projectManagersVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProject(AddEditProjectViewModel projectViewModel)
+        {
+            await _manager.AddProjectAsync(projectViewModel);
+            return RedirectToAction("Projects", "Lists");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ProjectManager")]
+        public async Task<IActionResult> EditProject(int id)
+        {
+            var project = await _manager.GetProjectByIdAsync(id);
+
+            var projectManagers = await _manager.GetProjectManagersAsync();
+
+            if (project == null)
+            {
+                return View();
+            }
+
+            var projectManagersVM = EmployeeEntitiesToViewModels(projectManagers);
+        
+
+            var addProjectVM = new AddEditProjectViewModel()
+            {
+                Id  = project.Id,
+                Type = project.Type,
+                StartDate = project.StartDate,
+                EndDate = project.EndDate,
+                ProjectManagerId = project.ProjectManagerId,
+                Comment = project.Comment,
+                Status = project.Status,
+                ProjectManagers = projectManagersVM
+            };
+
+            return View(addProjectVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProject(int id, AddEditProjectViewModel projectViewModel)
+        {
+            await _manager.EditProjectAsync(id, projectViewModel);
+            return RedirectToAction("Projects", "Lists");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProject(int id)
+        {
+            await _manager.DeleteProjectAsync(id);
+            return RedirectToAction("Projects", "Lists");
+        }
+
+        private EmployeeViewModel[] EmployeeEntitiesToViewModels(List<Employee> employees)
+        {
             EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
             for (int i = 0; i < employees.Count; i++)
             {
@@ -269,19 +306,7 @@ namespace OutOfOffice.Controllers
                 };
             }
 
-            var addEmployeeVM = new AddEditProjectViewModel()
-            {
-                ProjectManagers = employeesVM
-            };
-
-            return View(addEmployeeVM);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddProject(AddEditProjectViewModel projectViewModel)
-        {
-            await _manager.AddProjecteAsync(projectViewModel);
-            return RedirectToAction("Projects", "Lists");
+            return employeesVM;
         }
     }
 }
