@@ -50,6 +50,7 @@ namespace OutOfOffice.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Employee.FullName),
+                    new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Employee.Position.ToString()),
                 };
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
+using System.Security.Claims;
 
 namespace OutOfOffice.Controllers
 {
@@ -115,9 +116,21 @@ namespace OutOfOffice.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> LeaveRequests(string sortBy)
+        public async Task<IActionResult> LeaveRequests(string sortBy, bool searchById = false)
         {
-            var requests = await _manager.GetLeaveRequestsAsync();
+            List<LeaveRequest> requests;
+            if (searchById)
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                int userId = int.Parse(userIdClaim.Value);
+
+                requests = await _manager.GetLeaveRequestsOfUserAsync(userId);
+            }
+            else
+            {
+                requests = await _manager.GetLeaveRequestsAsync();
+            }
+            
 
             switch (sortBy)
             {

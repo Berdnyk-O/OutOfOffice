@@ -12,6 +12,7 @@ namespace OutOfOffice.Managers
         Task EditEmployeeAsync(int id, AddEditEmployeeViewModel employeeViewModel);
         Task DeleteEmployeeAsync(int id);
         Task<List<LeaveRequest>> GetLeaveRequestsAsync();
+        Task<List<LeaveRequest>> GetLeaveRequestsOfUserAsync(int id);
         Task<LeaveRequest?> GetLeaveRequestByIdAsync(int id);
         Task<List<ApprovalRequest>> GetApprovalRequestsAsync();
         Task<ApprovalRequest?> GetApprovalRequestByIdAsync(int id);

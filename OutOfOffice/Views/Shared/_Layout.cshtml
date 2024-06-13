@@ -24,7 +24,6 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                             </li>
-                            
                         }
                         else
                         {
@@ -32,19 +31,31 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="Employees">Employees</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="LeaveRequests">Leave Requests</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="ApprovalRequests">Approval Requests</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="Projects">Projects</a>
-                        </li>
-                        
+                        @if (User.Identity.IsAuthenticated && (User.IsInRole("HRManager") || User.IsInRole("ProjectManager")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="Employees">Employees</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="LeaveRequests">Leave Requests</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="ApprovalRequests">Approval Requests</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="Projects">Projects</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="LeaveRequests" asp-route-searchById="true">Leave Requests</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lists" asp-action="Projects">Projects</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
