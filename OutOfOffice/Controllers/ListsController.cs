@@ -16,6 +16,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> Employees(string sortBy)
         {
             var employees = await _manager.GetEmployeesAsync();
@@ -50,21 +51,8 @@ namespace OutOfOffice.Controllers
         public async Task<IActionResult> AddEmployee()
         {
             var employees = await _manager.GetEmployeesAsync();
-            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
-            for (int i = 0; i < employees.Count; i++)
-            {
-                employeesVM[i] = new EmployeeViewModel()
-                {
-                    Id = employees[i].Id,
-                    FullName = employees[i].FullName,
-                    Subdivision = employees[i].Subdivision,
-                    Position = employees[i].Position,
-                    Status = employees[i].Status,
-                    PeoplePartnerId = employees[i].PeoplePartnerId,
-                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
-                    Photo = null
-                };
-            }
+
+            var employeesVM = EmployeeEntitiesToViewModels(employees);
 
             var addEmployeeVM = new AddEditEmployeeViewModel()
             {
@@ -82,6 +70,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> EditEmployee(int id)
         {
             var employees = await _manager.GetEmployeesAsync();
@@ -92,24 +81,11 @@ namespace OutOfOffice.Controllers
                 return View();
             }
 
-            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
-            for (int i = 0; i < employees.Count; i++)
-            {
-                employeesVM[i] = new EmployeeViewModel()
-                {
-                    Id = employees[i].Id,
-                    FullName = employees[i].FullName,
-                    Subdivision = employees[i].Subdivision,
-                    Position = employees[i].Position,
-                    Status = employees[i].Status,
-                    PeoplePartnerId = employees[i].PeoplePartnerId,
-                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
-                    Photo = null
-                };
-            }
+            var employeesVM = EmployeeEntitiesToViewModels(employees);
 
             var addEmployeeVM = new AddEditEmployeeViewModel()
             {
+                Id = employee.Id, 
                 FullName = employee.FullName,
                 Subdivision = employee.Subdivision,
                 Position = employee.Position,
@@ -138,6 +114,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> LeaveRequests(string sortBy)
         {
             var requests = await _manager.GetLeaveRequestsAsync();
@@ -172,6 +149,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> ApprovalRequests(string sortBy)
         {
             var requests = await _manager.GetApprovalRequestsAsync();
@@ -193,6 +171,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> ApprovalRequestDetails(int id)
         {
             var request = await _manager.GetApprovalRequestByIdAsync(id);
@@ -207,6 +186,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Projects(string sortBy)
         {
             var projects = await _manager.GetProjectsAsync();
@@ -234,10 +214,100 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> ProjectDetails(int id)
         {
             var request = await _manager.GetProjectByIdAsync(id);
             return View(request);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ProjectManager")]
+        public async Task<IActionResult> AddProject()
+        {
+            var projectManagers = await _manager.GetProjectManagersAsync();
+
+            var projectManagersVM = EmployeeEntitiesToViewModels(projectManagers);
+
+            var addEmployeeVM = new AddEditProjectViewModel()
+            {
+                ProjectManagers = projectManagersVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProject(AddEditProjectViewModel projectViewModel)
+        {
+            await _manager.AddProjectAsync(projectViewModel);
+            return RedirectToAction("Projects", "Lists");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ProjectManager")]
+        public async Task<IActionResult> EditProject(int id)
+        {
+            var project = await _manager.GetProjectByIdAsync(id);
+
+            var projectManagers = await _manager.GetProjectManagersAsync();
+
+            if (project == null)
+            {
+                return View();
+            }
+
+            var projectManagersVM = EmployeeEntitiesToViewModels(projectManagers);
+        
+
+            var addProjectVM = new AddEditProjectViewModel()
+            {
+                Id  = project.Id,
+                Type = project.Type,
+                StartDate = project.StartDate,
+                EndDate = project.EndDate,
+                ProjectManagerId = project.ProjectManagerId,
+                Comment = project.Comment,
+                Status = project.Status,
+                ProjectManagers = projectManagersVM
+            };
+
+            return View(addProjectVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProject(int id, AddEditProjectViewModel projectViewModel)
+        {
+            await _manager.EditProjectAsync(id, projectViewModel);
+            return RedirectToAction("Projects", "Lists");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProject(int id)
+        {
+            await _manager.DeleteProjectAsync(id);
+            return RedirectToAction("Projects", "Lists");
+        }
+
+        private EmployeeViewModel[] EmployeeEntitiesToViewModels(List<Employee> employees)
+        {
+            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeesVM[i] = new EmployeeViewModel()
+                {
+                    Id = employees[i].Id,
+                    FullName = employees[i].FullName,
+                    Subdivision = employees[i].Subdivision,
+                    Position = employees[i].Position,
+                    Status = employees[i].Status,
+                    PeoplePartnerId = employees[i].PeoplePartnerId,
+                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
+                    Photo = null
+                };
+            }
+
+            return employeesVM;
         }
     }
 }

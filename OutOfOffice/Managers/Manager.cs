@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
+using OutOfOffice.Enums;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
 
@@ -17,6 +18,13 @@ namespace OutOfOffice.Managers
         public async Task<List<Employee>> GetEmployeesAsync()
         {
             return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<List<Employee>> GetProjectManagersAsync()
+        {
+            return await _context.Employees
+                .Where(x=>x.Position == Position.ProjectManager)
+                .ToListAsync();
         }
 
         public async Task<Employee?> GetEmployeeByIdAsync(int id)
@@ -110,7 +118,7 @@ namespace OutOfOffice.Managers
         {
             return await _context.ApprovalRequests
                 .Include(x=>x.Approver)
-                .FirstAsync(x=>x.Id == id);
+                .FirstOrDefaultAsync(x=>x.Id == id);
         }
 
         public async Task<List<Project>> GetProjectsAsync()
@@ -154,11 +162,56 @@ namespace OutOfOffice.Managers
                .FirstAsync(x => x.Id == id);
         }
 
+        public async Task AddProjectAsync(AddEditProjectViewModel projectViewModel)
+        {
+            var project = new Project()
+            {
+                Type = projectViewModel.Type,
+                StartDate = projectViewModel.StartDate,
+                EndDate = projectViewModel.EndDate,
+                ProjectManagerId = projectViewModel.ProjectManagerId,
+                Comment = projectViewModel.Comment,
+                Status = projectViewModel.Status
+            };
+
+            await _context.Projects.AddAsync(project);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditProjectAsync(int id, AddEditProjectViewModel projectViewModel)
+        {
+            var project = await GetProjectByIdAsync(id);
+            if (project == null)
+            {
+                return;
+            }
+
+            project.Type = projectViewModel.Type;
+            project.StartDate = projectViewModel.StartDate;
+            project.EndDate = projectViewModel.EndDate;
+            project.ProjectManagerId = projectViewModel.ProjectManagerId;
+            project.Comment = projectViewModel.Comment;
+            project.Status = projectViewModel.Status;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _context.Users
                 .Include(x => x.Employee)
                 .FirstOrDefaultAsync(x => x.Email == email);
+        }
+
+        public async Task DeleteProjectAsync(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+
+            if (project != null)
+            {
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

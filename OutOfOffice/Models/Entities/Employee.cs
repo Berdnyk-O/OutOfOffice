@@ -18,6 +18,10 @@ namespace OutOfOffice.Models.Entities
         public int? PeoplePartnerId { get; set; }
         public Employee? PeoplePartner { get; set; } = null!;
         public int OutOfOfficeBalance { get; set; }
-        public string? Photo { get; set; } 
+        public string? Photo { get; set; }
+
+        public ICollection<ApprovalRequest> ApprovalRequests { get; set; }
+        public ICollection<LeaveRequest> LeaveRequests { get; set; }
+        public User User { get; set; }
     }
 }

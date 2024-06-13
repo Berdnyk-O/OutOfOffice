@@ -2,10 +2,6 @@
 @using OutOfOffice.Models.Entities
 @model ApprovalRequest
 
-@{
-    string id = ViewContext.RouteData.Values["id"].ToString();
-}
-
 <div>
     @if (Model == null)
     {
