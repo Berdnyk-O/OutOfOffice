@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
 using OutOfOffice.Managers;
@@ -13,6 +14,14 @@ builder.Services.AddDbContext<IOutOfOfficeContext, OutOfOfficeContext>(opts =>
 });
 
 builder.Services.AddScoped<IManager, Manager>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Home/Login";
+        options.AccessDeniedPath = "/Home/Forbidden/";
+    });
 
 var app = builder.Build();
 
@@ -29,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

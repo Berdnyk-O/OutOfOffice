@@ -1,8 +1,17 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if(ViewData["Role"]!=null)
+    {
+        <h2 class="display-4">@ViewData["UserName"]</h2>
+        <h5>Role: @ViewData["Role"]</h5>
+    }
+    else
+    {
+        <h2 class="display-4">Guest</h2>
+    }
 </div>

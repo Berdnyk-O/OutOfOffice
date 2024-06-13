@@ -153,5 +153,12 @@ namespace OutOfOffice.Managers
                .Include(x => x.ProjectManager)
                .FirstAsync(x => x.Id == id);
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users
+                .Include(x => x.Employee)
+                .FirstOrDefaultAsync(x => x.Email == email);
+        }
     }
 }

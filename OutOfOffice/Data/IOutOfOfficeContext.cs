@@ -9,6 +9,7 @@ namespace OutOfOffice.Data
         DbSet<Employee> Employees { get; set; }
         DbSet<LeaveRequest> LeaveRequests { get; set; }
         DbSet<Project> Projects { get; set; }
+        DbSet<User> Users { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
