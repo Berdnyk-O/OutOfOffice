@@ -2,6 +2,17 @@
 @using OutOfOffice.Models.Entities
 @model LeaveRequest
 
+@{
+   
+    @if (ViewData["edit"] == "true")
+    {
+        ViewData["Title"] = "Edit leave request";
+    }
+    else
+    {
+        ViewData["Title"] = "Add leave request";
+    }
+}
 
 <div>
     <h1>

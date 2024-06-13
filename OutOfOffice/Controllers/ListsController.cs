@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
@@ -116,10 +117,12 @@ namespace OutOfOffice.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> LeaveRequests(string sortBy, bool searchById = false)
+        public async Task<IActionResult> LeaveRequests(string sortBy)
         {
+            var userRoleClaim = User.FindFirst(ClaimTypes.Role);
+
             List<LeaveRequest> requests;
-            if (searchById)
+            if (userRoleClaim.Value != "HRManager" && userRoleClaim.Value != "ProjectManager")
             {
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 int userId = int.Parse(userIdClaim.Value);
@@ -183,9 +186,10 @@ namespace OutOfOffice.Controllers
             if(id != null)
             {
                 var request = await _manager.GetLeaveRequestByIdAsync(id.Value);
+                ViewData["edit"] = "true";
                 return View(request);
             }
-
+            ViewData["edit"] = "false";
             return View();
         }
 
