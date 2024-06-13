@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace OutOfOffice.Controllers
 {
@@ -13,15 +14,24 @@ namespace OutOfOffice.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Login(LoginModel model)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
