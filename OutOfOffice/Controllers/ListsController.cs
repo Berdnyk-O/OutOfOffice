@@ -174,6 +174,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> ApprovalRequests(string sortBy)
         {
             var requests = await _manager.GetApprovalRequestsAsync();
@@ -195,6 +196,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> ApprovalRequestDetails(int id)
         {
             var request = await _manager.GetApprovalRequestByIdAsync(id);

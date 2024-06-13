@@ -110,7 +110,7 @@ namespace OutOfOffice.Managers
         {
             return await _context.ApprovalRequests
                 .Include(x=>x.Approver)
-                .FirstAsync(x=>x.Id == id);
+                .FirstOrDefaultAsync(x=>x.Id == id);
         }
 
         public async Task<List<Project>> GetProjectsAsync()
