@@ -16,6 +16,8 @@ namespace OutOfOffice.Managers
         Task<LeaveRequest?> GetLeaveRequestByIdAsync(int id);
         Task AddLeaveRequestAsync(LeaveRequest leaveRequest);
         Task EditLeaveRequestAsync(int id, LeaveRequest leaveRequest);
+        Task SubmitLeaveRequestsAsync(LeaveRequest leaveRequest);
+        Task CancelLeaveRequestsAsync(LeaveRequest leaveRequest);
         Task<List<ApprovalRequest>> GetApprovalRequestsAsync();
         Task<ApprovalRequest?> GetApprovalRequestByIdAsync(int id);
         Task UpdateApprovalRequestStatusAsync(int id, ApprovalRequest approvalRequest);

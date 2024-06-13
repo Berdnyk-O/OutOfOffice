@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
 using OutOfOffice.Enums;
+using OutOfOffice.Migrations;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
 
@@ -183,7 +184,35 @@ namespace OutOfOffice.Managers
 
                 await _context.SaveChangesAsync();
             }
-            
+        }
+
+        public async Task SubmitLeaveRequestsAsync(LeaveRequest leaveRequest)
+        {
+            var request = await GetLeaveRequestByIdAsync(leaveRequest.Id);
+            request.Status = Status.Active;
+
+            var approvalRequest = new ApprovalRequest()
+            {
+                ApproverId = leaveRequest.EmployeeId,
+                LeaveRequestId = leaveRequest.Id,
+                Comment = leaveRequest.Comment,
+                Status = Status.Inactive,
+            };
+
+            await _context.ApprovalRequests.AddAsync(approvalRequest);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CancelLeaveRequestsAsync(LeaveRequest leaveRequest)
+        {
+            var request = await GetLeaveRequestByIdAsync(leaveRequest.Id);
+            request.Status = Status.Inactive;
+
+            var approvalRequests = await GetApprovalRequestsAsync();
+            approvalRequests = approvalRequests.Where(x => x.LeaveRequestId == leaveRequest.Id).ToList();
+
+            _context.ApprovalRequests.RemoveRange(approvalRequests);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Project?> GetProjectByIdAsync(int id)

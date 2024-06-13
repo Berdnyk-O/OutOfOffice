@@ -153,6 +153,29 @@ namespace OutOfOffice.Controllers
             return View(requests);
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> LeaveRequests(int id)
+        {
+            LeaveRequest request = await _manager.GetLeaveRequestByIdAsync(id);
+            if(request == null)
+            {
+                return RedirectToAction("LeaveRequests", "Lists");
+            }
+
+            if (request.Status == Enums.Status.Inactive)
+            {
+                await _manager.SubmitLeaveRequestsAsync(request);
+            }
+            else
+            {
+                await _manager.CancelLeaveRequestsAsync(request);
+
+            }
+
+            return RedirectToAction("LeaveRequests", "Lists");
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> AddEditLeaveRequest(int? id = null)

@@ -1,4 +1,5 @@
-﻿@using OutOfOffice.Models.Entities
+﻿@using OutOfOffice.Enums
+@using OutOfOffice.Models.Entities
 @model List<LeaveRequest>
 
 @{
@@ -58,7 +59,11 @@
                         <th scope="col">
 
                         </th>
+                        <th scope="col">
+
+                        </th>
                     }
+                   
                 </tr>
             </thead>
             <tbody>
@@ -82,7 +87,25 @@
                             <td>
                                 <a class="btn btn-primary" asp-controller="Lists" asp-action="AddEditLeaveRequest" asp-route-id="@request.Id">Edit</a>
                             </td>
+                            @if (request.Status == Status.Inactive)
+                            {
+                                <td>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-success" asp-controller="Lists" asp-action="LeaveRequests" asp-route-id="@request.Id" asp-route-action="submit">Submitt</button>
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-danger" asp-controller="Lists" asp-action="LeaveRequests" asp-route-id="@request.Id" asp-route-action="cancel">Cancel</button>
+                                    </form>
+                                </td>
+                            }
                         }
+
+                       
                     </tr>
                 }
             </tbody>
