@@ -1,6 +1,4 @@
 ﻿using OutOfOffice.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace OutOfOffice.Models
 {
@@ -16,6 +14,5 @@ namespace OutOfOffice.Models
         public string? PhotoBase64 { get; set; }
 
         public EmployeeViewModel[] Partners { get; set; } = null!;
-
     }
 }

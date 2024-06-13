@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
+using OutOfOffice.Models.Entities;
 
 namespace OutOfOffice.Controllers
 {

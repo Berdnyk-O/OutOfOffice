@@ -1,10 +1,13 @@
-﻿@model List<ApprovalRequest>
+﻿@using OutOfOffice.Models.Entities
+@model List<ApprovalRequest>
+
 @{
     ViewData["Title"] = "Approval Requests";
 }
 
 <div>
     <h1>Approval Requests:</h1>
+
     @if (Model.Count < 1)
     {
         <h3>List empty</h3>

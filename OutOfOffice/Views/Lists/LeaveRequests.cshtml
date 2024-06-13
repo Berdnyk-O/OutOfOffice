@@ -1,10 +1,13 @@
-﻿@model List<LeaveRequest>
+﻿@using OutOfOffice.Models.Entities
+@model List<LeaveRequest>
+
 @{
     ViewData["Title"] = "Leave Requests";
 }
 
 <div>
     <h1>Leave Requests:</h1>
+
     @if (Model.Count < 1)
     {
         <h3>List empty</h3>

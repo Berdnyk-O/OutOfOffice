@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace OutOfOffice.Models
+namespace OutOfOffice.Models.Entities
 {
     public class ApprovalRequest
     {
