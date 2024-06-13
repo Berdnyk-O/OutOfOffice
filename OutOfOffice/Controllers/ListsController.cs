@@ -246,5 +246,42 @@ namespace OutOfOffice.Controllers
             var request = await _manager.GetProjectByIdAsync(id);
             return View(request);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "ProjectManager")]
+        public async Task<IActionResult> AddProject()
+        {
+            var employees = await _manager.GetProjectManagersAsync();
+            
+            EmployeeViewModel[] employeesVM = new EmployeeViewModel[employees.Count];
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeesVM[i] = new EmployeeViewModel()
+                {
+                    Id = employees[i].Id,
+                    FullName = employees[i].FullName,
+                    Subdivision = employees[i].Subdivision,
+                    Position = employees[i].Position,
+                    Status = employees[i].Status,
+                    PeoplePartnerId = employees[i].PeoplePartnerId,
+                    OutOfOfficeBalance = employees[i].OutOfOfficeBalance,
+                    Photo = null
+                };
+            }
+
+            var addEmployeeVM = new AddEditProjectViewModel()
+            {
+                ProjectManagers = employeesVM
+            };
+
+            return View(addEmployeeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProject(AddEditProjectViewModel projectViewModel)
+        {
+            await _manager.AddProjecteAsync(projectViewModel);
+            return RedirectToAction("Projects", "Lists");
+        }
     }
 }

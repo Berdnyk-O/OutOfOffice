@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
+using OutOfOffice.Enums;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
 
@@ -17,6 +18,13 @@ namespace OutOfOffice.Managers
         public async Task<List<Employee>> GetEmployeesAsync()
         {
             return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<List<Employee>> GetProjectManagersAsync()
+        {
+            return await _context.Employees
+                .Where(x=>x.Position == Position.ProjectManager)
+                .ToListAsync();
         }
 
         public async Task<Employee?> GetEmployeeByIdAsync(int id)
@@ -152,6 +160,22 @@ namespace OutOfOffice.Managers
             return await _context.Projects
                .Include(x => x.ProjectManager)
                .FirstAsync(x => x.Id == id);
+        }
+
+        public async Task AddProjecteAsync(AddEditProjectViewModel projectViewModel)
+        {
+            var project = new Project()
+            {
+                Type = projectViewModel.Type,
+                StartDate = projectViewModel.StartDate,
+                EndDate = projectViewModel.EndDate,
+                ProjectManagerId = projectViewModel.ProjectManagerId,
+                Comment = projectViewModel.Comment,
+                Status = projectViewModel.Status
+            };
+
+            await _context.Projects.AddAsync(project);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<User?> GetUserByEmailAsync(string email)
