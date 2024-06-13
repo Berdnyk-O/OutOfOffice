@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
@@ -23,6 +24,11 @@ namespace OutOfOffice.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["UserName"] = User.Identity.Name;
+                ViewData["Role"] = User.FindFirstValue(ClaimTypes.Role);
+            }
             return View();
         }
 
