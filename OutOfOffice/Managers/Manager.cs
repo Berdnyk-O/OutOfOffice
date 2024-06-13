@@ -114,6 +114,29 @@ namespace OutOfOffice.Managers
                 .FirstAsync(x => x.Id == id);
         }
 
+        public async Task AddLeaveRequestAsync(LeaveRequest leaveRequest)
+        {
+            await _context.LeaveRequests.AddAsync(leaveRequest);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditLeaveRequestAsync(int id, LeaveRequest leaveRequest)
+        {
+            var request = await GetLeaveRequestByIdAsync(id);
+            if (request == null)
+            {
+                return;
+            }
+
+            request.AbsenceReason = leaveRequest.AbsenceReason;
+            request.StartDate = leaveRequest.StartDate;
+            request.EndDate = leaveRequest.EndDate;
+            request.Comment = leaveRequest.Comment;
+            request.Status = leaveRequest.Status;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<ApprovalRequest>> GetApprovalRequestsAsync()
         {
             return await _context.ApprovalRequests

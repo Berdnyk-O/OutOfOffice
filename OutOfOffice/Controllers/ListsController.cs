@@ -131,7 +131,6 @@ namespace OutOfOffice.Controllers
                 requests = await _manager.GetLeaveRequestsAsync();
             }
             
-
             switch (sortBy)
             {
                 case "EmployeeFullName":
@@ -153,6 +152,39 @@ namespace OutOfOffice.Controllers
 
             return View(requests);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> AddEditLeaveRequest(int? id = null)
+        {
+            if(id != null)
+            {
+                var request = await _manager.GetLeaveRequestByIdAsync(id.Value);
+                return View(request);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEditLeaveRequest(LeaveRequest leaveRequest, int? id = null)
+        {
+            if (id != null)
+            {
+                await _manager.EditLeaveRequestAsync(id.Value, leaveRequest);
+            }
+            else
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+                int userId = int.Parse(userIdClaim.Value);
+                leaveRequest.EmployeeId = userId;
+                await _manager.AddLeaveRequestAsync(leaveRequest);
+            }
+            
+            return RedirectToAction("LeaveRequests", "Lists");
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> LeaveRequestDetails(int id)
