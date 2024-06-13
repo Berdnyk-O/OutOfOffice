@@ -36,16 +36,16 @@ namespace OutOfOffice.Controllers
         public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
         {
             var user = await _manager.GetUserByEmailAsync(model.Email);
-            if(user!=null && ComputeSha256Hash(model.Password) == user.Password)
+            if (user != null && ComputeSha256Hash(model.Password) == user.Password)
             {
                 await HttpContext.SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Employee.FullName),
-                        new Claim(ClaimTypes.Role, user.Employee.Position.ToString()),
-                    };
+                {
+                    new Claim(ClaimTypes.Name, user.Employee.FullName),
+                    new Claim(ClaimTypes.Role, user.Employee.Position.ToString()),
+                };
 
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -53,17 +53,22 @@ namespace OutOfOffice.Controllers
                 await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimsIdentity));
-            }
 
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
+                if (returnUrl != null)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError(string.Empty, "Incorrect email or password");
             }
-            
+
+            return View(model);
         }
 
         [HttpGet]

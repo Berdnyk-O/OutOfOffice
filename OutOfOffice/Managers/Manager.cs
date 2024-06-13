@@ -158,7 +158,7 @@ namespace OutOfOffice.Managers
         {
             return await _context.Users
                 .Include(x => x.Employee)
-                .FirstAsync(x => x.Email == email);
+                .FirstOrDefaultAsync(x => x.Email == email);
         }
     }
 }
