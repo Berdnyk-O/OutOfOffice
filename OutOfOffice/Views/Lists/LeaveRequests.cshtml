@@ -1,4 +1,5 @@
-﻿@using OutOfOffice.Models.Entities
+﻿@using OutOfOffice.Enums
+@using OutOfOffice.Models.Entities
 @model List<LeaveRequest>
 
 @{
@@ -6,7 +7,19 @@
 }
 
 <div>
-    <h1>Leave Requests:</h1>
+    
+    <div class="row">
+        <div class="col-md-9">
+            <h1>Leave Requests:</h1>
+        </div>
+        @if (!User.IsInRole("HRManager") && !User.IsInRole("ProjectManager"))
+        {
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                <a class="btn btn-success" asp-controller="Lists" asp-action="AddEditLeaveRequest">Add leave request</a>
+            </div>
+        }
+    </div>
+
 
     @if (Model.Count < 1)
     {
@@ -41,6 +54,16 @@
 
                         </th>
                     }
+                    @if (!User.IsInRole("HRManager") && !User.IsInRole("ProjectManager"))
+                    {
+                        <th scope="col">
+
+                        </th>
+                        <th scope="col">
+
+                        </th>
+                    }
+                   
                 </tr>
             </thead>
             <tbody>
@@ -59,6 +82,29 @@
                                 <a class="btn btn-primary" asp-controller="Lists" asp-action="LeaveRequestDetails" asp-route-id="@request.Id">Details</a>
                             </td>
                         }
+                        @if (!User.IsInRole("HRManager") && !User.IsInRole("ProjectManager"))
+                        {
+                            <td>
+                                <a class="btn btn-primary" asp-controller="Lists" asp-action="AddEditLeaveRequest" asp-route-id="@request.Id">Edit</a>
+                            </td>
+                            @if (request.Status == Status.Inactive)
+                            {
+                                <td>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-success" asp-controller="Lists" asp-action="LeaveRequests" asp-route-id="@request.Id" asp-route-action="submit">Submitt</button>
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-danger" asp-controller="Lists" asp-action="LeaveRequests" asp-route-id="@request.Id" asp-route-action="cancel">Cancel</button>
+                                    </form>
+                                </td>
+                            }
+                        }
+
                        
                     </tr>
                 }

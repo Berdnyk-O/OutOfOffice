@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
+using System.Security.Claims;
 
 namespace OutOfOffice.Controllers
 {
@@ -117,8 +119,21 @@ namespace OutOfOffice.Controllers
         [Authorize]
         public async Task<IActionResult> LeaveRequests(string sortBy)
         {
-            var requests = await _manager.GetLeaveRequestsAsync();
+            var userRoleClaim = User.FindFirst(ClaimTypes.Role);
 
+            List<LeaveRequest> requests;
+            if (userRoleClaim.Value != "HRManager" && userRoleClaim.Value != "ProjectManager")
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                int userId = int.Parse(userIdClaim.Value);
+
+                requests = await _manager.GetLeaveRequestsOfUserAsync(userId);
+            }
+            else
+            {
+                requests = await _manager.GetLeaveRequestsAsync();
+            }
+            
             switch (sortBy)
             {
                 case "EmployeeFullName":
@@ -140,6 +155,63 @@ namespace OutOfOffice.Controllers
 
             return View(requests);
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> LeaveRequests(int id)
+        {
+            LeaveRequest request = await _manager.GetLeaveRequestByIdAsync(id);
+            if(request == null)
+            {
+                return RedirectToAction("LeaveRequests", "Lists");
+            }
+
+            if (request.Status == Enums.Status.Inactive)
+            {
+                await _manager.SubmitLeaveRequestsAsync(request);
+            }
+            else
+            {
+                await _manager.CancelLeaveRequestsAsync(request);
+
+            }
+
+            return RedirectToAction("LeaveRequests", "Lists");
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> AddEditLeaveRequest(int? id = null)
+        {
+            if(id != null)
+            {
+                var request = await _manager.GetLeaveRequestByIdAsync(id.Value);
+                ViewData["edit"] = "true";
+                return View(request);
+            }
+            ViewData["edit"] = "false";
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEditLeaveRequest(LeaveRequest leaveRequest, int? id = null)
+        {
+            if (id != null)
+            {
+                await _manager.EditLeaveRequestAsync(id.Value, leaveRequest);
+            }
+            else
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+                int userId = int.Parse(userIdClaim.Value);
+                leaveRequest.EmployeeId = userId;
+                await _manager.AddLeaveRequestAsync(leaveRequest);
+            }
+            
+            return RedirectToAction("LeaveRequests", "Lists");
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> LeaveRequestDetails(int id)

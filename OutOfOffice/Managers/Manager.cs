@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
 using OutOfOffice.Enums;
+using OutOfOffice.Migrations;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
 
@@ -99,11 +100,42 @@ namespace OutOfOffice.Managers
                 .ToListAsync();
         }
 
+        public async Task<List<LeaveRequest>> GetLeaveRequestsOfUserAsync(int id)
+        {
+            return await _context.LeaveRequests
+               .Include(x => x.Employee)
+               .Where(x=>x.EmployeeId==id)
+               .ToListAsync();
+        }
+
         public async Task<LeaveRequest?> GetLeaveRequestByIdAsync(int id)
         {
             return await _context.LeaveRequests
                 .Include(x => x.Employee)
                 .FirstAsync(x => x.Id == id);
+        }
+
+        public async Task AddLeaveRequestAsync(LeaveRequest leaveRequest)
+        {
+            await _context.LeaveRequests.AddAsync(leaveRequest);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditLeaveRequestAsync(int id, LeaveRequest leaveRequest)
+        {
+            var request = await GetLeaveRequestByIdAsync(id);
+            if (request == null)
+            {
+                return;
+            }
+
+            request.AbsenceReason = leaveRequest.AbsenceReason;
+            request.StartDate = leaveRequest.StartDate;
+            request.EndDate = leaveRequest.EndDate;
+            request.Comment = leaveRequest.Comment;
+            request.Status = leaveRequest.Status;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<ApprovalRequest>> GetApprovalRequestsAsync()
@@ -152,7 +184,35 @@ namespace OutOfOffice.Managers
 
                 await _context.SaveChangesAsync();
             }
-            
+        }
+
+        public async Task SubmitLeaveRequestsAsync(LeaveRequest leaveRequest)
+        {
+            var request = await GetLeaveRequestByIdAsync(leaveRequest.Id);
+            request.Status = Status.Active;
+
+            var approvalRequest = new ApprovalRequest()
+            {
+                ApproverId = leaveRequest.EmployeeId,
+                LeaveRequestId = leaveRequest.Id,
+                Comment = leaveRequest.Comment,
+                Status = Status.Inactive,
+            };
+
+            await _context.ApprovalRequests.AddAsync(approvalRequest);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CancelLeaveRequestsAsync(LeaveRequest leaveRequest)
+        {
+            var request = await GetLeaveRequestByIdAsync(leaveRequest.Id);
+            request.Status = Status.Inactive;
+
+            var approvalRequests = await GetApprovalRequestsAsync();
+            approvalRequests = approvalRequests.Where(x => x.LeaveRequestId == leaveRequest.Id).ToList();
+
+            _context.ApprovalRequests.RemoveRange(approvalRequests);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Project?> GetProjectByIdAsync(int id)
