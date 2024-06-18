@@ -31,7 +31,7 @@ Is an ASP.NET MVC application designed to manage absence notifications.
 
 The system has 3 user roles:
 - **HR Manager**: Can view main pages, perform CRUD operations with employees, approve and reject requests.
-- **Project Manager**: Can view all pages, approve and reject requests, create and delete projects.
+- **Project Manager**: Can view main pages, approve and reject requests, create and delete projects.
 - **Employee**: Can view /Lists/LeaveRequests with their requests and /Lists/Projects.
      
 ## Test Data
