@@ -26,6 +26,8 @@ namespace OutOfOffice.Managers
         Task AddProjectAsync(AddEditProjectViewModel projectViewModel);
         Task EditProjectAsync(int id, AddEditProjectViewModel projectViewModel);
         Task DeleteProjectAsync(int id);
+        Task AddUserAsync(User user);
         Task<User?> GetUserByEmailAsync(string email);
+        void ClearData();
     }
 }

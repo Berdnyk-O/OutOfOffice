@@ -7,6 +7,7 @@ using OutOfOffice.Services.Hosted;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHostedService<MigrationHostedService>();
+builder.Services.AddHostedService<TestDataHostedService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<IOutOfOfficeContext, OutOfOfficeContext>(opts =>
