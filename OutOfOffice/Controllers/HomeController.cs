@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OutOfOffice.Helpers;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 using System.Diagnostics;
@@ -42,7 +43,7 @@ namespace OutOfOffice.Controllers
         public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
         {
             var user = await _manager.GetUserByEmailAsync(model.Email);
-            if (user != null && ComputeSha256Hash(model.Password) == user.Password)
+            if (user != null && Sha256Helper.ComputeHash(model.Password) == user.Password)
             {
                 await HttpContext.SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
@@ -85,21 +86,6 @@ namespace OutOfOffice.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        private string ComputeSha256Hash(string rawData)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
         }
 
         public IActionResult Forbidden()

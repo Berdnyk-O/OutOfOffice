@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Data;
 using OutOfOffice.Managers;
+using OutOfOffice.Services.Hosted;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddHostedService<MigrationHostedService>();
+builder.Services.AddHostedService<TestDataHostedService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<IOutOfOfficeContext, OutOfOfficeContext>(opts =>

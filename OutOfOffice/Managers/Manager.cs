@@ -256,13 +256,6 @@ namespace OutOfOffice.Managers
             await _context.SaveChangesAsync();
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
-        {
-            return await _context.Users
-                .Include(x => x.Employee)
-                .FirstOrDefaultAsync(x => x.Email == email);
-        }
-
         public async Task DeleteProjectAsync(int id)
         {
             var project = await _context.Projects.FindAsync(id);
@@ -272,6 +265,25 @@ namespace OutOfOffice.Managers
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users
+                .Include(x => x.Employee)
+                .FirstOrDefaultAsync(x => x.Email == email);
+        }
+
+        public void ClearData()
+        {
+            var employees = _context.Employees.ToArray();
+            _context.Employees.RemoveRange(employees);
         }
     }
 }
