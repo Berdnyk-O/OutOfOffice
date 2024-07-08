@@ -9,12 +9,12 @@
 <div>
     
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-9">
             <h1>Leave Requests:</h1>
         </div>
         @if (!User.IsInRole("HRManager") && !User.IsInRole("ProjectManager"))
         {
-            <div class="col-md-3 d-flex justify-content-center align-items-center">
+            <div class="col-3 d-flex justify-content-end align-items-center">
                 <a class="btn btn-success" asp-controller="Lists" asp-action="AddEditLeaveRequest">Add leave request</a>
             </div>
         }
@@ -27,7 +27,7 @@
     }
     else
     {
-        <div class="table-responsive-md">
+        <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
