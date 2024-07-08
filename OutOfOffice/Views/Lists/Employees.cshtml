@@ -6,13 +6,16 @@
 }
 
 <div>
-    <div class="row">
+    <div class="row mb-md-3 mb-2">
         <div class="col-9">
             <h1>Employees:</h1>
         </div>
-        <div class="col-3 d-flex justify-content-end align-items-center">
-            <a class="btn btn-success" asp-area="" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
-        </div>
+        @if (User.IsInRole("HRManager"))
+        {
+            <div class="col-3 d-flex justify-content-end align-items-center">
+                <a class="btn btn-success" asp-area="" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
+            </div>
+        }
     </div>
     
     
