@@ -6,13 +6,16 @@
 }
 
 <div>
-    <div class="row">
-        <div class="col-md-9">
+    <div class="row mb-md-3 mb-2">
+        <div class="col-9">
             <h1>Employees:</h1>
         </div>
-        <div class="col-md-3 d-flex justify-content-center align-items-center">
-            <a class="btn btn-success" asp-area="" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
-        </div>
+        @if (User.IsInRole("HRManager"))
+        {
+            <div class="col-3 d-flex justify-content-end align-items-center">
+                <a class="btn btn-success" asp-area="" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
+            </div>
+        }
     </div>
     
     
@@ -22,61 +25,63 @@
     }
     else
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        @Html.ActionLink("Id", "Employees", new { sortBy = string.Empty }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName" }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision" }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        @Html.ActionLink("Position", "Employees", new { sortBy = "Position" }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        @Html.ActionLink("Status", "Employees", new { sortBy = "Status" }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner" }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" }, new { @class = "sort-link" })
-                    </th>
-                    <th scope="col">
-                        
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var employee in Model)
-                {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
                     <tr>
-                        <th scope="row">@employee.Id</th>
-                        <td>@employee.FullName</td>
-                        <td>@employee.Subdivision.ToString()</td>
-                        <td>@employee.Position.ToString()</td>
-                        <td>@employee.Status.ToString()</td>
-                        <td>@(employee.PeoplePartner?.FullName ?? "No Partner")</td>
-                        <td>@employee.OutOfOfficeBalance</td>
-                        <td>
-                            <a class="btn btn-primary" asp-controller="Lists" asp-action="EditEmployee" asp-route-id="@employee.Id">
-                                @if (User.IsInRole("HRManager"))
-                                {
-                                    <text>Edit</text>
-                                }
-                                else
-                                {
-                                    <text>Details</text>
-                                }
-                            </a>
-                        </td>
+                        <th scope="col">
+                            @Html.ActionLink("Id", "Employees", new { sortBy = string.Empty }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName" }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision" }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            @Html.ActionLink("Position", "Employees", new { sortBy = "Position" }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            @Html.ActionLink("Status", "Employees", new { sortBy = "Status" }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner" }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" }, new { @class = "sort-link" })
+                        </th>
+                        <th scope="col">
+                            
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <th scope="row">@employee.Id</th>
+                            <td>@employee.FullName</td>
+                            <td>@employee.Subdivision.ToString()</td>
+                            <td>@employee.Position.ToString()</td>
+                            <td>@employee.Status.ToString()</td>
+                            <td>@(employee.PeoplePartner?.FullName ?? "No Partner")</td>
+                            <td>@employee.OutOfOfficeBalance</td>
+                            <td>
+                                <a class="btn btn-primary" asp-controller="Lists" asp-action="EditEmployee" asp-route-id="@employee.Id">
+                                    @if (User.IsInRole("HRManager"))
+                                    {
+                                        <text>Edit</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Details</text>
+                                    }
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>

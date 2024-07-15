@@ -5,13 +5,15 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    <hr />
     @if(ViewData["Role"]!=null)
     {
-        <h2 class="display-4">@ViewData["UserName"]</h2>
-        <h5>Role: @ViewData["Role"]</h5>
+        <h3 class="display-4">@ViewData["UserName"]</h3>
+        <h4>Role: @ViewData["Role"]</h4>
     }
     else
     {
-        <h2 class="display-4">Guest</h2>
+        <h3 class="display-4">Guest</h3>
+        <h4><a asp-area="" asp-controller="Home" asp-action="Login">Log in</a> to use the system</h4>
     }
 </div>
