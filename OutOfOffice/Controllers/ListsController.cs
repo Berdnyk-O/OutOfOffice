@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OutOfOffice.Managers;
 using OutOfOffice.Models;
 using OutOfOffice.Models.Entities;
@@ -19,9 +20,17 @@ namespace OutOfOffice.Controllers
 
         [HttpGet]
         [Authorize(Roles = "HRManager, ProjectManager")]
-        public async Task<IActionResult> Employees(string sortBy)
+        public async Task<IActionResult> Employees(string sortBy, string searchString)
         {
             var employees = await _manager.GetEmployeesAsync();
+            
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees
+                    .Where(x => x.FullName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
 
             switch(sortBy)
             {

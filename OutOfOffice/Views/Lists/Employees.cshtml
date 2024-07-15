@@ -18,6 +18,14 @@
         }
     </div>
     
+    <form method="get">
+        <div class="input-group mb-3">
+            <input type="text" placeholder="Search by name" aria-label="Search by name" aria-describedby="basic-addon2" name="SearchString" />
+            <div class="input-group-append">
+                <input class="input-group-text" id="basic-addon2" type="submit" value="Search" />
+            </div>
+        </div>
+    </form>
     
     @if (Model.Count<1)
     {
