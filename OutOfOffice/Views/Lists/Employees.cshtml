@@ -6,7 +6,7 @@
 }
 
 <div>
-    <div class="row mb-md-3 mb-2">
+    <div class="row mb-md-3">
         <div class="col-9">
             <h1>Employees:</h1>
         </div>
@@ -20,9 +20,9 @@
     
     <form method="get">
         <div class="input-group mb-3">
-            <input type="text" placeholder="Search by name" aria-label="Search by name" aria-describedby="basic-addon2" name="SearchString" />
+            <input type="text" placeholder="Search by name" aria-label="Search by name" aria-describedby="basic-addon2" name="SearchString" value=@ViewData["searchString"] />
             <div class="input-group-append">
-                <input class="input-group-text" id="basic-addon2" type="submit" value="Search" />
+                <input class="input-group-text" id="basic-addon2" type="submit" value="Search"/>       
             </div>
         </div>
     </form>
