@@ -22,6 +22,9 @@ namespace OutOfOffice.Controllers
         [Authorize(Roles = "HRManager, ProjectManager")]
         public async Task<IActionResult> Employees(string sortBy, string searchString)
         {
+            ViewData["sortBy"] = sortBy;
+            ViewData["searchString"] = searchString;
+
             var employees = await _manager.GetEmployeesAsync();
             
 

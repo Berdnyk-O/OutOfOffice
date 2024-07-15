@@ -13,7 +13,7 @@
         @if (User.IsInRole("HRManager"))
         {
             <div class="col-3 d-flex justify-content-end align-items-center">
-                <a class="btn btn-success" asp-area="" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
+                <a class="btn btn-success" asp-controller="Lists" asp-action="AddEmployee">Add Employee</a>
             </div>
         }
     </div>
@@ -38,25 +38,25 @@
                 <thead>
                     <tr>
                         <th scope="col">
-                            @Html.ActionLink("Id", "Employees", new { sortBy = string.Empty }, new { @class = "sort-link" })
+                            @Html.ActionLink("Id", "Employees", new { sortBy = string.Empty, searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
-                            @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName" }, new { @class = "sort-link" })
+                            @Html.ActionLink("Full name", "Employees", new { sortBy = "FullName", searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
-                            @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision" }, new { @class = "sort-link" })
+                            @Html.ActionLink("Subdivision", "Employees", new { sortBy = "Subdivision", searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
-                            @Html.ActionLink("Position", "Employees", new { sortBy = "Position" }, new { @class = "sort-link" })
+                            @Html.ActionLink("Position", "Employees", new { sortBy = "Position", searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
-                            @Html.ActionLink("Status", "Employees", new { sortBy = "Status" }, new { @class = "sort-link" })
+                            @Html.ActionLink("Status", "Employees", new { sortBy = "Status", searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
-                            @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner" }, new { @class = "sort-link" })
+                            @Html.ActionLink("Partner", "Employees", new { sortBy = "Partner", searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
-                            @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance" }, new { @class = "sort-link" })
+                            @Html.ActionLink("Out Of Office Balance", "Employees", new { sortBy = "OutOfOfficeBalance", searchString = ViewData["searchString"] }, new { @class = "sort-link" })
                         </th>
                         <th scope="col">
                             
